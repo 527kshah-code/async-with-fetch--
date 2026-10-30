@@ -40,25 +40,22 @@ loadButton.addEventListener("click", loadFriends);
 //   xhr.send();
 // }
 
-function loadFriends() {
+async function loadFriends() {
   statusMessage.classList.remove("error");
   statusMessage.textContent = "Loading friends...";
-
-  fetch("friends.json")
-    .then(function (response) {
-      if (!response.ok) {
-        throw new Error("(response.status)");
-      }
-      return response.json();
-    })
-    .then(function (friends) {
-      renderFriends(friends);
-    })
-    .catch(function (error) {
-      showDataError(error);
-    });
+ try{
+    const response = await fetch("friends.json");
+    if (!response.ok) {
+      throw new Error(`Error! status: ${response.status}`);
+    }
+    const friends = await response.json();
+    renderFriends(friends);
+  } 
+  catch (error) {
+  showDataError(error);
   }
-  
+}
+
 // -------------------------------------------------------------
 // renderFriends: turns the array into cards. Do not change it for this lesson.
 // -------------------------------------------------------------
