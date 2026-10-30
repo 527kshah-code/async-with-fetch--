@@ -16,30 +16,49 @@ loadButton.addEventListener("click", loadFriends);
 // loadFriends: CURRENT VERSION, uses XMLHttpRequest.
 // Checkpoints 2 and 3 replace this whole function.
 // -------------------------------------------------------------
+// function loadFriends() {
+//   statusMessage.classList.remove("error");
+//   statusMessage.textContent = "Loading friends...";
+
+//   const xhr = new XMLHttpRequest();
+//   xhr.open("GET", "friends.json");
+
+//   xhr.onload = function () {
+//     if (xhr.status === 200) {
+//       try {
+//         const friends = JSON.parse(xhr.responseText);
+//         renderFriends(friends);
+//       } catch (error) {
+//         showDataError(error);
+//       }
+//     } else {
+//       showLoadError();
+//     }
+//   };
+
+//   xhr.onerror = showLoadError;
+//   xhr.send();
+// }
+
 function loadFriends() {
   statusMessage.classList.remove("error");
   statusMessage.textContent = "Loading friends...";
 
-  const xhr = new XMLHttpRequest();
-  xhr.open("GET", "friends.json");
-
-  xhr.onload = function () {
-    if (xhr.status === 200) {
-      try {
-        const friends = JSON.parse(xhr.responseText);
-        renderFriends(friends);
-      } catch (error) {
-        showDataError(error);
+  fetch("friends.json")
+    .then(function (response) {
+      if (!response.ok) {
+        throw new Error("(response.status)");
       }
-    } else {
-      showLoadError();
-    }
-  };
-
-  xhr.onerror = showLoadError;
-  xhr.send();
-}
-
+      return response.json();
+    })
+    .then(function (friends) {
+      renderFriends(friends);
+    })
+    .catch(function (error) {
+      showDataError(error);
+    });
+  }
+  
 // -------------------------------------------------------------
 // renderFriends: turns the array into cards. Do not change it for this lesson.
 // -------------------------------------------------------------
