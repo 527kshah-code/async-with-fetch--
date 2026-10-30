@@ -40,6 +40,24 @@ loadButton.addEventListener("click", loadFriends);
 //   xhr.send();
 // }
 
+function loadFriends() {
+  statusMessage.classList.remove("error");
+  statusMessage.textContent = "Loading friends...";
+  fetch("friends.json")
+    .then(function (response) {
+    if (!response.ok) {
+      throw new Error(response.status);
+    }
+    return response.json();
+    })
+    .then(function (friends) {
+      renderFriends(friends);
+  })
+  .catch(function (error) {
+    showLoadError();
+  });
+}
+
 async function loadFriends() {
   statusMessage.classList.remove("error");
   statusMessage.textContent = "Loading friends...";
