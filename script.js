@@ -73,8 +73,7 @@ async function loadFriends() {
   showDataError(error);
   }
 }
-
-// -------------------------------------------------------------
+// the 404 needs the response.ok to check because fetch does not throw an error for 404, it only throws for network errors. So we need to check the response.ok property to see if the response was successful.
 // renderFriends: turns the array into cards. Do not change it for this lesson.
 // -------------------------------------------------------------
 function renderFriends(friends) {
